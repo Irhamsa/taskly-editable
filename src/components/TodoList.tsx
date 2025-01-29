@@ -53,15 +53,20 @@ const TodoList = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.2 }}
+                className="group"
               >
                 <TodoItem todo={todo} onUpdate={loadTodos} />
               </motion.div>
             ))}
           </AnimatePresence>
           {incompleteTodos.length === 0 && (
-            <div className="text-center text-gray-500 py-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center text-muted-foreground py-4 rounded-lg border border-dashed"
+            >
               Belum ada tugas aktif
-            </div>
+            </motion.div>
           )}
         </div>
 
@@ -76,6 +81,7 @@ const TodoList = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.2 }}
+                  className="group"
                 >
                   <TodoItem todo={todo} onUpdate={loadTodos} />
                 </motion.div>

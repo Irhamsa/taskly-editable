@@ -53,15 +53,22 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
   };
 
   return (
-    <div className={`flex flex-col gap-2 p-4 rounded-lg shadow-sm border transition-colors ${
-      todo.completed ? 'bg-gray-50' : 'bg-white'
-    }`}>
+    <div 
+      className={`flex flex-col gap-2 p-4 rounded-lg border transition-all duration-200
+        ${todo.completed 
+          ? 'bg-muted/50 dark:bg-muted/10' 
+          : 'bg-card hover:shadow-md dark:bg-card/50'
+        }
+        group-hover:border-primary/20
+      `}
+    >
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
           size="icon"
           onClick={handleToggle}
-          className={todo.completed ? "text-green-500" : "text-gray-400"}
+          className={`${todo.completed ? "text-green-500" : "text-muted-foreground"} 
+            hover:text-primary transition-colors`}
         >
           {todo.completed ? (
             <CheckSquare className="h-4 w-4" />
@@ -76,6 +83,7 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
               className="flex-1"
+              autoFocus
             />
             <Button size="icon" onClick={handleUpdate}>
               <Check className="h-4 w-4" />
@@ -86,10 +94,10 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
           </div>
         ) : (
           <div className="flex justify-between items-center flex-1">
-            <span className={`${todo.completed ? "line-through text-gray-400" : ""}`}>
+            <span className={`${todo.completed ? "line-through text-muted-foreground" : ""}`}>
               {todo.text}
             </span>
-            <div className="flex gap-1">
+            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <Button variant="ghost" size="icon" onClick={() => setIsEditing(true)}>
                 <Edit className="h-4 w-4" />
               </Button>
@@ -117,7 +125,7 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
         )}
       </div>
 
-      <div className="flex flex-col gap-1 text-xs text-gray-500">
+      <div className="flex flex-col gap-1 text-xs text-muted-foreground">
         <div className="flex items-center gap-1">
           <Calendar className="h-3 w-3" />
           <span>Dibuat: {formatDate(todo.createdAt)}</span>
