@@ -5,6 +5,18 @@ import { updateTodo, deleteTodo, Todo } from '@/lib/todoStorage';
 import { Check, X, Edit, Trash, Calendar, Clock, CheckSquare, Square } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from 'sonner';
 
 interface TodoItemProps {
   todo: Todo;
@@ -18,6 +30,7 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
   const handleUpdate = () => {
     if (editText.trim() !== todo.text) {
       updateTodo(todo.id, { text: editText.trim() });
+      toast.success('Tugas berhasil diperbarui');
       onUpdate();
     }
     setIsEditing(false);
@@ -25,11 +38,13 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
 
   const handleToggle = () => {
     updateTodo(todo.id, { completed: !todo.completed });
+    toast.success(todo.completed ? 'Tugas ditandai belum selesai' : 'Tugas ditandai selesai');
     onUpdate();
   };
 
   const handleDelete = () => {
     deleteTodo(todo.id);
+    toast.success('Tugas berhasil dihapus');
     onUpdate();
   };
 
@@ -78,9 +93,25 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
               <Button variant="ghost" size="icon" onClick={() => setIsEditing(true)}>
                 <Edit className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={handleDelete}>
-                <Trash className="h-4 w-4" />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Trash className="h-4 w-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Hapus Tugas</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Apakah Anda yakin ingin menghapus tugas ini? Tindakan ini tidak dapat dibatalkan.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Batal</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete}>Hapus</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         )}
