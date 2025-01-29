@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { updateTodo, deleteTodo, Todo } from '@/lib/todoStorage';
-import { Check, X, Edit, Trash, Calendar, Clock } from 'lucide-react';
+import { Check, X, Edit, Trash, Calendar, Clock, CheckSquare, Square } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
@@ -38,7 +38,9 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-sm border">
+    <div className={`flex flex-col gap-2 p-4 rounded-lg shadow-sm border transition-colors ${
+      todo.completed ? 'bg-gray-50' : 'bg-white'
+    }`}>
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
@@ -46,7 +48,11 @@ const TodoItem = ({ todo, onUpdate }: TodoItemProps) => {
           onClick={handleToggle}
           className={todo.completed ? "text-green-500" : "text-gray-400"}
         >
-          <Check className="h-4 w-4" />
+          {todo.completed ? (
+            <CheckSquare className="h-4 w-4" />
+          ) : (
+            <Square className="h-4 w-4" />
+          )}
         </Button>
 
         {isEditing ? (

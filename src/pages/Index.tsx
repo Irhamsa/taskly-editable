@@ -11,8 +11,10 @@ const Index = () => {
         <h1 className="text-2xl font-bold text-center mb-6 text-primary">
           Daftar Tugas
         </h1>
-        <div className="bg-white rounded-lg shadow-sm border">
-          <AddTodo onAdd={() => setRefresh(prev => prev + 1)} />
+        <div className="space-y-4">
+          <div className="bg-white rounded-lg shadow-sm border p-4">
+            <AddTodo onAdd={() => setRefresh(prev => prev + 1)} />
+          </div>
           <TodoList key={refresh} />
         </div>
       </div>
