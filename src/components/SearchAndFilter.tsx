@@ -1,5 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useEffect, useState } from 'react';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface SearchAndFilterProps {
   searchQuery: string;
@@ -14,12 +16,19 @@ const SearchAndFilter = ({
   filter,
   onFilterChange,
 }: SearchAndFilterProps) => {
+  const [localSearch, setLocalSearch] = useState(searchQuery);
+  const debouncedSearch = useDebounce(localSearch, 300);
+
+  useEffect(() => {
+    onSearchChange(debouncedSearch);
+  }, [debouncedSearch, onSearchChange]);
+
   return (
     <div className="flex flex-col sm:flex-row gap-2">
       <Input
         type="text"
-        value={searchQuery}
-        onChange={(e) => onSearchChange(e.target.value)}
+        value={localSearch}
+        onChange={(e) => setLocalSearch(e.target.value)}
         placeholder="Cari tugas..."
         className="flex-1"
       />
