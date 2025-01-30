@@ -31,8 +31,23 @@ const TodoList = () => {
   const incompleteTodos = filteredTodos.filter(todo => !todo.completed);
   const completedTodos = filteredTodos.filter(todo => todo.completed);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-6">
+    <motion.div 
+      className="flex flex-col gap-6"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <TodoStats todos={todos} />
       
       <SearchAndFilter
@@ -52,8 +67,14 @@ const TodoList = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.2 }}
+                transition={{ 
+                  duration: 0.2,
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 25
+                }}
                 className="group"
+                whileHover={{ scale: 1.01 }}
               >
                 <TodoItem todo={todo} onUpdate={loadTodos} />
               </motion.div>
@@ -63,7 +84,7 @@ const TodoList = () => {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center text-muted-foreground py-4 rounded-lg border border-dashed"
+              className="text-center text-muted-foreground py-8 rounded-lg border border-dashed"
             >
               Belum ada tugas aktif
             </motion.div>
@@ -80,8 +101,14 @@ const TodoList = () => {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ 
+                    duration: 0.2,
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 25
+                  }}
                   className="group"
+                  whileHover={{ scale: 1.01 }}
                 >
                   <TodoItem todo={todo} onUpdate={loadTodos} />
                 </motion.div>
@@ -90,7 +117,7 @@ const TodoList = () => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
