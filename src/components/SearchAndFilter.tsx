@@ -2,6 +2,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useEffect, useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
+import { Search, Filter } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface SearchAndFilterProps {
   searchQuery: string;
@@ -24,25 +26,35 @@ const SearchAndFilter = ({
   }, [debouncedSearch, onSearchChange]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-2">
-      <Input
-        type="text"
-        value={localSearch}
-        onChange={(e) => setLocalSearch(e.target.value)}
-        placeholder="Cari tugas..."
-        className="flex-1"
-      />
-      <Select value={filter} onValueChange={onFilterChange}>
-        <SelectTrigger className="w-full sm:w-[180px]">
-          <SelectValue placeholder="Filter status" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Semua</SelectItem>
-          <SelectItem value="active">Aktif</SelectItem>
-          <SelectItem value="completed">Selesai</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+    <motion.div 
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col sm:flex-row gap-3 bg-card rounded-lg p-4 border border-border/50 shadow-sm"
+    >
+      <div className="relative flex-1">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="text"
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
+          placeholder="Cari tugas..."
+          className="pl-10 bg-background/50 border-border/50"
+        />
+      </div>
+      <div className="relative sm:w-[200px]">
+        <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Select value={filter} onValueChange={onFilterChange}>
+          <SelectTrigger className="w-full pl-10 bg-background/50 border-border/50">
+            <SelectValue placeholder="Filter status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Semua</SelectItem>
+            <SelectItem value="active">Aktif</SelectItem>
+            <SelectItem value="completed">Selesai</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </motion.div>
   );
 };
 
