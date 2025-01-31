@@ -8,6 +8,7 @@ import ActiveTodos from "./pages/ActiveTodos";
 import CompletedTodos from "./pages/CompletedTodos";
 import NotFound from "./pages/NotFound";
 import ThemeToggle from "./components/ThemeToggle";
+import AddTodo from "./components/AddTodo";
 
 const queryClient = new QueryClient();
 
@@ -18,11 +19,12 @@ const App = () => (
       <Sonner />
       <HashRouter>
         <div className="min-h-screen bg-background">
-          <div className="fixed top-4 right-4 z-50">
+          <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+            <AddTodo onAdd={() => {}} />
             <ThemeToggle />
           </div>
           <AppSidebar />
-          <div className="pl-[var(--sidebar-width-icon)] transition-[padding] duration-300 ease-in-out">
+          <div className="pl-[var(--sidebar-width-icon)] transition-[padding] duration-300 ease-in-out md:pl-[var(--sidebar-width)]">
             <Routes>
               <Route path="/" element={<ActiveTodos />} />
               <Route path="/completed" element={<CompletedTodos />} />
