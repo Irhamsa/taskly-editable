@@ -1,10 +1,10 @@
 import { motion } from "framer-motion"
 import TodoList from "@/components/TodoList"
 import TodoStatsComponent from "@/components/TodoStats"
-import { useTodos } from "@/lib/todoStorage"
+import { getTodos } from "@/lib/todoStorage"
 
 const TodoStats = () => {
-  const { todos } = useTodos()
+  const todos = getTodos();
 
   return (
     <div className="p-6 space-y-8">
