@@ -5,10 +5,14 @@ import SearchAndFilter from './SearchAndFilter';
 import TodoStats from './TodoStats';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const TodoList = () => {
+interface TodoListProps {
+  defaultFilter?: string;
+}
+
+const TodoList = ({ defaultFilter = 'all' }: TodoListProps) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState(defaultFilter);
 
   const loadTodos = () => {
     setTodos(getTodos());
@@ -58,40 +62,42 @@ const TodoList = () => {
       />
 
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-lg font-semibold text-primary">Tugas Aktif</h2>
-          <AnimatePresence mode="popLayout">
-            {incompleteTodos.map((todo) => (
-              <motion.div
-                key={todo.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ 
-                  duration: 0.2,
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 25
-                }}
-                className="group"
-                whileHover={{ scale: 1.01 }}
+        {filter !== 'completed' && (
+          <div className="flex flex-col gap-2">
+            <h2 className="text-lg font-semibold text-primary">Tugas Aktif</h2>
+            <AnimatePresence mode="popLayout">
+              {incompleteTodos.map((todo) => (
+                <motion.div
+                  key={todo.id}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ 
+                    duration: 0.2,
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 25
+                  }}
+                  className="group"
+                  whileHover={{ scale: 1.01 }}
+                >
+                  <TodoItem todo={todo} onUpdate={loadTodos} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {incompleteTodos.length === 0 && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center text-muted-foreground py-8 rounded-lg border border-dashed"
               >
-                <TodoItem todo={todo} onUpdate={loadTodos} />
+                Belum ada tugas aktif
               </motion.div>
-            ))}
-          </AnimatePresence>
-          {incompleteTodos.length === 0 && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center text-muted-foreground py-8 rounded-lg border border-dashed"
-            >
-              Belum ada tugas aktif
-            </motion.div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
-        {completedTodos.length > 0 && (
+        {filter !== 'active' && completedTodos.length > 0 && (
           <div className="flex flex-col gap-2">
             <h2 className="text-lg font-semibold text-primary">Tugas Selesai</h2>
             <AnimatePresence mode="popLayout">
