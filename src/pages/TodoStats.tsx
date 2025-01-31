@@ -1,7 +1,11 @@
 import { motion } from "framer-motion"
 import TodoList from "@/components/TodoList"
+import TodoStatsComponent from "@/components/TodoStats"
+import { useTodos } from "@/lib/todoStorage"
 
 const TodoStats = () => {
+  const { todos } = useTodos()
+
   return (
     <div className="p-6 space-y-8">
       <motion.div
@@ -17,12 +21,14 @@ const TodoStats = () => {
         </p>
       </motion.div>
 
+      <TodoStatsComponent todos={todos} />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
       >
-        <TodoList showStats={true} />
+        <TodoList />
       </motion.div>
     </div>
   )
